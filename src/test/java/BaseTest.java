@@ -9,7 +9,7 @@ import java.time.Duration;
 
 public class BaseTest {
     WebDriver driver;
-
+    String baseUrl = "https://www.demoblaze.com/index.html";
     @BeforeTest
     public void setup() {
 //        WebDriverManager.chromedriver().browserVersion("108").setup();
@@ -18,7 +18,7 @@ public class BaseTest {
         ChromeOptions opt = new ChromeOptions();
 //        opt.setBinary("C:\\tools\\GoogleChromePortable\\App\\Chrome-bin\\chrome.exe");
         opt.addArguments("--no-sandbox");
-        opt.addArguments("--headless");
+//        opt.addArguments("--headless");
         opt.addArguments("--incognito");
         opt.addArguments("--ignore-certificate-errors");
         opt.addArguments("--allow-running-insecure-content");

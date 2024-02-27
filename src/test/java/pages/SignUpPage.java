@@ -1,6 +1,5 @@
 package pages;
 
-import org.openqa.selenium.Alert;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -10,7 +9,7 @@ import org.openqa.selenium.support.PageFactory;
 import java.util.List;
 import java.util.UUID;
 
-public class SignInPage extends BasePage{
+public class SignUpPage extends BasePage{
 
     @FindBy(xpath = ("//a[@id='signin2']"))
     private static WebElement signIn_button;
@@ -27,7 +26,7 @@ public class SignInPage extends BasePage{
     @FindBys(@FindBy(xpath = ("")))
     private static List<WebElement> namee;
 
-    public SignInPage(WebDriver driver) {
+    public SignUpPage(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(driver, this);
     }
@@ -38,15 +37,17 @@ public class SignInPage extends BasePage{
     }
 
     public void scenario() throws InterruptedException {
-        // 
+        // Open Sign Up window
         waitForElement(signIn_button);
         signIn_button.click();
 
-        // Input test user credentials
+        // Input testing user credentials
         username_input.sendKeys("test" + generateString());
         password_input.sendKeys("test");
         register_button.click();
         Thread.sleep(500);
+
+        // Assert alert message
         String alertText = get_alert_text();
         assert alertText.equals("Sign up successful.") : "Alert text does not match the expected text.";
     }
