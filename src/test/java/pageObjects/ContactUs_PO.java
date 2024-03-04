@@ -1,11 +1,12 @@
-package pages;
+package pageObjects;
 
+import helpers.WaitForElementHelper;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class ContactUs extends  BasePage{
+public class ContactUs_PO extends Actions {
 
     @FindBy(xpath = ("//a[contains(text(),'Contact')]"))
     private static WebElement contact_us_btn;
@@ -22,26 +23,27 @@ public class ContactUs extends  BasePage{
     @FindBy(xpath = ("//button[contains(text(),'Send message')]"))
     private static WebElement send_message_btn;
 
-    public ContactUs(WebDriver driver) {
+    public ContactUs_PO(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(driver, this);
     }
 
-    public void scenario() {
-        // Open Contact Us window
+    public ContactUs_PO openContactUsPage() {
+        WaitForElementHelper waits = new WaitForElementHelper(driver);
         button_click(contact_us_btn);
-        waitForElementVisibility("recipient-email");
+        waits.waitForElementVisibilityById("recipient-email");
+        return this;
+    }
 
-        // Input testing data
-        input_text(recipent_email_input, "test@mail.com");
-        input_text(recipent_name_input, "Tester");
-        input_text(message_input, "Test Message");
+    public ContactUs_PO inputData(String email, String name, String message) {
+        input_text(recipent_email_input, email);
+        input_text(recipent_name_input, name);
+        input_text(message_input, message);
+        return this;
+    }
 
-        // Click on send message button
+    public ContactUs_PO clickSendMessage() {
         button_click(send_message_btn);
-
-        // Assert alert message
-        String alertText = get_alert_text();
-        assert alertText.equals("Thanks for the message!!") : "Alert text does not match the expected text.";
+        return this;
     }
 }

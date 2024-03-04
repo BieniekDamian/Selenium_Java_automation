@@ -1,5 +1,6 @@
-package pages;
+package pageObjects;
 
+import helpers.WaitForElementHelper;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -9,7 +10,7 @@ import org.testng.Assert;
 
 import java.util.List;
 
-public class PriceCheck extends BasePage{
+public class PriceCheck_PO extends Actions {
     @FindBy(xpath = ("//a[contains(text(),'Phones')]"))
     public static WebElement phone_category;
 
@@ -62,14 +63,16 @@ public class PriceCheck extends BasePage{
     public static WebElement close_purchase_btn;
 
 
-    public PriceCheck(WebDriver driver) {
+    public PriceCheck_PO(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(driver, this);
     }
 
-    public void phone_price_check(String category_name) throws InterruptedException {
+    public PriceCheck_PO categoryPriceCheck(String category_name) throws InterruptedException {
+        WaitForElementHelper waits = new WaitForElementHelper(driver);
+
         select_category(phone_category);
-        waitForElementVisibility("tbodyid");
+        waits.waitForElementVisibilityById("tbodyid");
         Thread.sleep(1000);
 
         int array_length = devices_list.size();
@@ -100,7 +103,7 @@ public class PriceCheck extends BasePage{
             place_order_btn.click();
 
             // Get value from order process
-            waitForElementVisibility("totalm");
+            waits.waitForElementVisibilityById("totalm");
             String price_from_place_order_window = order_price.getText().split("Total: ")[1];
             Assert.assertEquals(element_price, price_from_place_order_window);
 
@@ -117,11 +120,6 @@ public class PriceCheck extends BasePage{
             Thread.sleep(1000);
             close_purchase_btn.click();
         }
+        return this;
     }
-
-    public void scenario() throws InterruptedException {
-        phone_price_check("Phone");
-
-    }
-
 }

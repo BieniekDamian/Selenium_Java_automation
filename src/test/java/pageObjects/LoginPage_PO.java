@@ -1,12 +1,12 @@
-package pages;
+package pageObjects;
 
+import helpers.WaitForElementHelper;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.testng.Assert;
 
-public class LoginPage extends BasePage{
+public class LoginPage_PO extends Actions {
 
     public static final String login_username = "test";
 
@@ -22,29 +22,26 @@ public class LoginPage extends BasePage{
     @FindBy(xpath = ("//input[@id='loginpassword']"))
     private static WebElement password_input;
 
-//    @FindBy(xpath = ("//a[@id='nameofuser']"))
-
     @FindBy(xpath = ("//a[@id='nameofuser'][contains(text(), "+login_username+")]"))
     private static WebElement user_name;
 
-    public LoginPage(WebDriver driver) {
+    public LoginPage_PO(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(driver, this);
     }
 
-    public void scenario() {
-        // Open Log In window
-        waitForElement(nav_logIn_btn);
+    public LoginPage_PO openLogInPage() {
+        WaitForElementHelper waits = new WaitForElementHelper(driver);
+        waits.waitForElementClickable(nav_logIn_btn);
         button_click(nav_logIn_btn);
+        return this;
+    }
 
-        // Insert login credentials
-        input_text(login_input, login_username);
-        input_text(password_input, "test");
+    public LoginPage_PO insertLoginCredentials(String login, String password) {
+        input_text(login_input, login);
+        input_text(password_input, password);
         button_click(logIn_btn);
-
-        // Assert name of logged in user
-        waitForElement(user_name);
-        Assert.assertEquals(user_name.getText(), "Welcome test");
+        return this;
     }
 
 }
