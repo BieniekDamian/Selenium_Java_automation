@@ -1,3 +1,4 @@
+package tests;
 
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
@@ -7,9 +8,9 @@ import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import java.time.Duration;
 
-public class BaseTest {
-    WebDriver driver;
-    String baseUrl = "https://www.demoblaze.com/index.html";
+public class SetupConfiguration {
+    public WebDriver driver;
+    public String baseUrl = "https://www.demoblaze.com/index.html";
     @BeforeTest
     public void setup() {
 //        WebDriverManager.chromedriver().browserVersion("108").setup();

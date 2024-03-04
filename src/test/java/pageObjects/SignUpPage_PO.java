@@ -1,5 +1,6 @@
-package pages;
+package pageObjects;
 
+import helpers.WaitForElementHelper;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -7,9 +8,8 @@ import org.openqa.selenium.support.FindBys;
 import org.openqa.selenium.support.PageFactory;
 
 import java.util.List;
-import java.util.UUID;
 
-public class SignUpPage extends BasePage{
+public class SignUpPage_PO extends Actions {
 
     @FindBy(xpath = ("//a[@id='signin2']"))
     private static WebElement signIn_button;
@@ -26,30 +26,23 @@ public class SignUpPage extends BasePage{
     @FindBys(@FindBy(xpath = ("")))
     private static List<WebElement> namee;
 
-    public SignUpPage(WebDriver driver) {
+    public SignUpPage_PO(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(driver, this);
     }
 
-    public static String generateString() {
-        String uuid = UUID.randomUUID().toString();
-        return "-" + uuid;
+    public SignUpPage_PO openSignUpPopUp(){
+        WaitForElementHelper waits = new WaitForElementHelper(driver);
+        waits.waitForElementClickable(signIn_button);
+        signIn_button.click();
+        return this;
     }
 
-    public void scenario() throws InterruptedException {
-        // Open Sign Up window
-        waitForElement(signIn_button);
-        signIn_button.click();
-
-        // Input testing user credentials
-        username_input.sendKeys("test" + generateString());
+    public SignUpPage_PO inputCredentials(String login, String identifier, String password) throws InterruptedException {
+        username_input.sendKeys("test" + identifier);
         password_input.sendKeys("test");
         register_button.click();
         Thread.sleep(500);
-
-        // Assert alert message
-        String alertText = get_alert_text();
-        assert alertText.equals("Sign up successful.") : "Alert text does not match the expected text.";
+        return this;
     }
-
 }
